@@ -43,11 +43,10 @@ w0 = (2.66e-6, 0)
 
 t_values_rot, theta_values, w_values = rk4_method_second_order_2D(f_rotacional, t0, theta0, w0, tf, h)
 
+
 #########################
 ####### Animacion #######
 #########################
-
-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -114,6 +113,6 @@ def update(frame):
 
 step = 1 
 indices = range(0, len(t_values), step)
-ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=200)
+ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=100)
 
 plt.show()
