@@ -15,7 +15,7 @@ def f(t, r, v):
 
 r0 = (a,0)
 t0 = 0
-tf = 365 * 24 * 3600  
+tf = 365*3 * 24 * 3600
 h = 1 * 1 * 24 * 3600 
 v0 = (0, 1028)  
 
@@ -26,7 +26,7 @@ Rluna = 1.737e6
 m = 7.342e22  
 I1 = 0.95 * 2/5 * m * Rluna**2  
 I2 = I3 = 2/5 * m * Rluna**2  
-k = 1e16
+k = 7.0e27 
 
 def f_rotacional(t,theta,w):
     x_actual = np.interp(t, t_values, r_values[:, 0]) 
@@ -37,9 +37,9 @@ def f_rotacional(t,theta,w):
 
 theta0 = (0,0)
 t0 = 0
-tf = 365 * 24 * 3600  
+tf = 365*3 * 24 * 3600  
 h = 1 * 1 * 24 * 3600 
-w0 = (2.66e-6, 0)  
+w0 = (1.5e-5, 0)  
 
 t_values_rot, theta_values, w_values = rk4_method_second_order_2D(f_rotacional, t0, theta0, w0, tf, h)
 
@@ -104,8 +104,8 @@ def update(frame):
     flecha_orientacion.set_offsets([x_luna, y_luna])
     
     # Sumamos un desfase para que la flecha apunte hacia la Tierra
-    u = longitud_flecha * np.cos(theta + np.pi) 
-    v = longitud_flecha * np.sin(theta + np.pi)
+    u = longitud_flecha * np.cos(theta ) 
+    v = longitud_flecha * np.sin(theta )
     
     flecha_orientacion.set_UVC(u, v)
     
@@ -113,6 +113,7 @@ def update(frame):
 
 step = 1 
 indices = range(0, len(t_values), step)
-ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=100)
+ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=50)
 
 plt.show()
+
