@@ -1,6 +1,6 @@
 # Se implementa el codigo anterior explicado en detalle en solucion.ipynb
 
-from metodos_para_edos import rk4_method_second_order_2D
+from metodos_para_edos import *
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,7 +16,7 @@ def f(t, r, v):
 r0 = (a,0)
 t0 = 0
 tf = 365*3 * 24 * 3600
-h = 1 * 1 * 24 * 3600 
+h = 24 * 3600 
 v0 = (0, 1028)  
 
 t_values, r_values, v_values = rk4_method_second_order_2D(f, t0, r0, v0, tf, h)
@@ -35,13 +35,13 @@ def f_rotacional(t,theta,w):
     theta_r= np.arctan2(y_actual, x_actual)
     return -((3*G*M*(I2-I1))/(I3*r_mag**3)) * np. sin(2*(theta - theta_r))- (k*w)/I3
 
-theta0 = (0,0)
+theta0 = 0
 t0 = 0
 tf = 365*3 * 24 * 3600  
-h = 1 * 1 * 24 * 3600 
-w0 = (1.5e-5, 0)  
+h = 24 * 3600 
+w0 = 1.5e-5 
 
-t_values_rot, theta_values, w_values = rk4_method_second_order_2D(f_rotacional, t0, theta0, w0, tf, h)
+_, theta_values, w_values = rk4_method_second_order(f_rotacional, t0, theta0, w0, tf, h)
 
 
 #########################
@@ -96,16 +96,16 @@ def init():
 def update(frame):
     x_luna = r_values[frame, 0]
     y_luna = r_values[frame, 1]
-    theta = theta_values[frame, 0]
+    
+    theta = theta_values[frame]
 
     luna_dot.set_data([x_luna], [y_luna])
     linea_distancia.set_data([0, x_luna], [0, y_luna])
 
-    flecha_orientacion.set_offsets([x_luna, y_luna])
+    flecha_orientacion.set_offsets(np.array([[x_luna, y_luna]]))
     
-    # Sumamos un desfase para que la flecha apunte hacia la Tierra
-    u = longitud_flecha * np.cos(theta ) 
-    v = longitud_flecha * np.sin(theta )
+    u = longitud_flecha * np.cos(theta) 
+    v = longitud_flecha * np.sin(theta)
     
     flecha_orientacion.set_UVC(u, v)
     
