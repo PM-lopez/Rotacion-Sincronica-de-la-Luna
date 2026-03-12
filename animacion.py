@@ -15,7 +15,7 @@ def f(t, r, v):
 
 r0 = (a,0)
 t0 = 0
-tf = 365*3 * 24 * 3600
+tf = 365* 5 * 24 * 3600
 h = 24 * 3600 
 v0 = (0, 1028)  
 
@@ -32,13 +32,10 @@ def f_rotacional(t,theta,w):
     x_actual = np.interp(t, t_values, r_values[:, 0]) 
     y_actual = np.interp(t, t_values, r_values[:, 1])
     r_mag = np.sqrt(x_actual**2 + y_actual**2)
-    theta_r= np.arctan2(y_actual, x_actual)
+    theta_r= np.arctan2(y_actual, x_actual)*180/np.pi
     return -((3*G*M*(I2-I1))/(I3*r_mag**3)) * np. sin(2*(theta - theta_r))- (k*w)/I3
 
 theta0 = 0
-t0 = 0
-tf = 365*3 * 24 * 3600  
-h = 24 * 3600 
 w0 = 1.5e-5 
 
 _, theta_values, w_values = rk4_method_second_order(f_rotacional, t0, theta0, w0, tf, h)
@@ -113,7 +110,9 @@ def update(frame):
 
 step = 1 
 indices = range(0, len(t_values), step)
-ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=50)
+ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=25)
 
 plt.show()
+
+
 
