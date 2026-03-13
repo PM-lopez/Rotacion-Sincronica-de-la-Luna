@@ -1,9 +1,8 @@
 # Se implementa el codigo anterior explicado en detalle en solucion.ipynb
-
-from metodos_para_edos import *
+########################################################################from metodos_para_edos import *
 import numpy as np
 import matplotlib.pyplot as plt
-
+from metodos_para_edos import rk4_method_second_order_2D, rk4_method_second_order
 
 G=6.67430e-11  
 M=5.972e24     
@@ -14,8 +13,12 @@ def f(t, r, v):
     return -G*M / r_mag**3 * np.array([r[0], r[1]])
 
 r0 = (a,0)
+
+# Tiempo de simulacion
 t0 = 0
-tf = 365* 5 * 24 * 3600
+tf = 365* 5 * 24 * 3600 * 3
+
+
 h = 24 * 3600 
 v0 = (0, 1028)  
 
@@ -32,13 +35,15 @@ def f_rotacional(t,theta,w):
     x_actual = np.interp(t, t_values, r_values[:, 0]) 
     y_actual = np.interp(t, t_values, r_values[:, 1])
     r_mag = np.sqrt(x_actual**2 + y_actual**2)
-    theta_r= np.arctan2(y_actual, x_actual)*180/np.pi
+    theta_r= np.arctan2(y_actual, x_actual)
     return -((3*G*M*(I2-I1))/(I3*r_mag**3)) * np. sin(2*(theta - theta_r))- (k*w)/I3
 
 theta0 = 0
 w0 = 1.5e-5 
 
 _, theta_values, w_values = rk4_method_second_order(f_rotacional, t0, theta0, w0, tf, h)
+
+############################################################################################
 
 
 #########################
@@ -110,7 +115,7 @@ def update(frame):
 
 step = 1 
 indices = range(0, len(t_values), step)
-ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=25)
+ani = FuncAnimation(fig, update, frames=indices, init_func=init, blit=True, interval=50)
 
 plt.show()
 
