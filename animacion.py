@@ -29,7 +29,7 @@ Rluna = 1.737e6
 m = 7.342e22  
 I1 = 0.95 * 2/5 * m * Rluna**2  
 I2 = I3 = 2/5 * m * Rluna**2  
-k = 7.0e27 
+k = 7.0e27 # Coeficiente de fricción para la rotación de la Luna (ajustado para sincronización efectiva)
 
 def f_rotacional(t,theta,w):
     x_actual = np.interp(t, t_values, r_values[:, 0]) 
@@ -39,7 +39,7 @@ def f_rotacional(t,theta,w):
     return -((3*G*M*(I2-I1))/(I3*r_mag**3)) * np. sin(2*(theta - theta_r))- (k*w)/I3
 
 theta0 = 0
-w0 = 1.5e-5 
+w0 = 1.5e-5  # Velocidad angular ajustado para sincronización efectiva
 
 _, theta_values, w_values = rk4_method_second_order(f_rotacional, t0, theta0, w0, tf, h)
 
